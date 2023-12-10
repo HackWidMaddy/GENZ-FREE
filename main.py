@@ -52,7 +52,9 @@ TOKEN = data_dict['TOKEN']
 CHANNEL_ID = data_dict['CHANNEL_ID']  # Replace with your Discord channel ID
 
 app = Flask(__name__)
-client = discord.Client()
+intents = discord.Intents.default()
+intents.all()
+client = discord.Client(intents=intents)
 
 
 def run_flask():
