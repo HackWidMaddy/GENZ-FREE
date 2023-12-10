@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask Upload to Discord ~ GreenCat</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
+  
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="http://ff.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=9QIWsXjfZ2R259pj9tj5qWCNSaiKGYVsh1WD0zdyoCcudc9IfplEkRttsfMPn7t2" charset="UTF-8"></script>
+    <script>
+        $(document).ready( function () {
+    $('#myTable').DataTable();
+} );
+    </script>
+    <style>
+        /* Your existing styles */
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 0;
+        }
+
+        .modal button {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .modal button:hover {
+            background-color: #0056b3;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="file"] {
+            margin-bottom: 10px;
+        }
+
+        button {
+            
+            background-color: #007BFF;
+            color: hsl(0, 0%, 100%);
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="conatiner">
+    <h1>GENZ-FREE: File Upload to Discord <span> ~ GreenCat</span></h1>
+   </div>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <button type="submit">Upload</button>
+    </form>
+
+  
+    <div class="container" style="margin-top: 50px;">
+        <table id="myTable" class="display">
+            <thead>
+                <tr>
+                    <th>File Name</th>
+                    <th>Download</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- https://cdn.discordapp.com/attachments/1182739629464617022/1182980582934855720/Objectives-2.pdf?ex=6586ab85&is=65743685&hm=37c4150e554936ef545d8e8367a60d3a37dce76db017f5c99fd6e8756beb3633& -->
+                {% for i in fileinfo %}
+                <tr>
+                    <td>{{i[0]}}</td>
+                    {% if i[2] == "True"%}
+                    <td><a href="/download/{{i[3]}}" target="_blank"><button>Download</button></a></td>
+                    {% else %}
+                    <td><a href="{{i[1]}}" target="_blank"><button>Download</button></a></td>
+                    {% endif %}
+                    <td>
+                        {% if i[2] == "True"%}
+                        <form method="post" action="/delete/multiple" style="display: inline; background-color: transparent; border: none; border-radius: 0; padding:0; margin: 0;" >
+                            <input type="hidden" name="msgid" value="{{ i[3] }}">   
+                            <button type="submit">Delete</button>
+                        </form>
+                    {% else %}
+                    <form method="post" action="/delete" style="display: inline; background-color: transparent; border: none; border-radius: 0; padding:0; margin: 0;" >
+                        <input type="hidden" name="url" value="{{ i[1] }}">   
+                        <button type="submit">Delete</button>
+                    </form>
+                    {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+        
+    <script>
+        function openModal() {
+            document.getElementById('newDirectoryModal').style.display = 'block';
+            document.getElementById('modalOverlay').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('newDirectoryModal').style.display = 'none';
+            document.getElementById('modalOverlay').style.display = 'none';
+        }
+
+        function createDirectory() {
+            // Add logic to create a new directory
+            alert('Directory created!');
+            closeModal();
+        }
+    </script>
+    
+</body>
+</html>
