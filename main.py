@@ -56,7 +56,7 @@ client = discord.Client()
 
 
 def run_flask():
-    app.run(debug=True, use_reloader=False)
+    app.run(use_reloader=False)
 
 def run_discord():
     client.run(TOKEN)
